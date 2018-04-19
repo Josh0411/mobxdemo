@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+    <button onclick="doIt()">DoIt</button>
+    <ul id="logMessages">
+    </ul>
+    <script>
+    function debug(msg) {
+        if (typeof msg !== 'undefined') {
+            var logList = document.getElementById('logMessages');
+            var newLogItem = document.createElement('li');
+            if (typeof msg === 'function') {
+                msg = Function.prototype.toString(msg);
+            } else if (typeof msg !== 'string') {
+                msg = JSON.stringify(msg);
+            }
+            var newLogText = document.createTextNode(msg);
+            newLogItem.appendChild(newLogText);
+            logList.appendChild(newLogItem);
+        }
+    }
+
+    function doIt() {
+
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        var context = new AudioContext();
+        var processor = context.createScriptProcessor(1024, 1, 1);
+        processor.connect(context.destination);
+
+        var handleSuccess = function(stream) {
+            var input = context.createMediaStreamSource(stream);
+            input.connect(processor);
+
+            processor.onaudioprocess = function(e) {
+                // Do something with the data, i.e Convert this to WAV
+                debug(e.inputBuffer);
+            };
+        };
+
+        navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: false
+            })
+            .then(handleSuccess);
+    }
+    </script>
+</body>
+
+</html>

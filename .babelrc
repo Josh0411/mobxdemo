@@ -1,0 +1,16 @@
+{"presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["firefox >= 40"],
+        },
+        "modules": false,
+        "useBuiltIns": true
+      }
+    ],
+    ['react'],
+    ['stage-0']
+  ],
+  "plugins": ["transform-decorators-legacy"]
+  }
