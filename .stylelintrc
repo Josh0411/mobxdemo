@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "no-invalid-double-slash-comments": true,
+    "length-zero-no-unit": [true, {
+    "message": "Error for XXXXXXXXXXXXXXx"
+    }],
+  }
+}
