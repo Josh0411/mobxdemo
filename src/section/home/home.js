@@ -5,6 +5,7 @@ import { Control } from 'react-keeper';
 import { observable, action, extendObservable,get,set } from 'mobx';
 import SubHome from './subHome/subHome';
 import MiniHome from './miniHome/miniHome';
+import './style/home.scss';
 
 
 @inject('homeStore')

@@ -4,6 +4,8 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const stylelint = require('stylelint-webpack-plugin');
+
 
 module.exports = function(env) {
     console.log(env);
@@ -17,6 +19,7 @@ module.exports = function(env) {
             path: path.resolve(__dirname, 'build'),
             chunkFilename: "[name].chunk.[chunkhash].js"
         },
+        devtool: 'source-map',
         module: {
             rules: [{
                 test: /(\.jsx|\.js)$/i,
@@ -36,12 +39,24 @@ module.exports = function(env) {
                         name: 'images/[name]-[hash].[ext]'
                     }
                 }]
+            }, {
+                test: /(\.scss|\.sass)$/i,
+                use: [{
+                    loader: 'style-loader'
+                },{
+                    loader: 'css-loader'
+                },{
+                    loader: 'sass-loader'
+                }]
             }]
         },
         plugins: [
             new cleanWebpackPlugin(path.resolve(__dirname, './build')),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
+            }),
+            new stylelint({
+                fix: true
             }),
             new CopyWebpackPlugin([
                 { from: __dirname + '/src/Voice', to:__dirname+ '/build/', toType: 'dir' }
