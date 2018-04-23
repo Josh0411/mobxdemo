@@ -24,6 +24,10 @@ import DevTools from 'mobx-react-devtools';
 
 
 class App extends React.Component {
+	enterHome(cb) {
+		console.log('====enterHome====');
+		cb();
+	}
 	render () {
 		return (
 			<Provider {...store}>
@@ -40,7 +44,7 @@ class App extends React.Component {
 							</ul>
 						</div>
 						<div className="content">
-							<Route index path="/home" component={Home}/>
+							<Route index cache path="/home" component={Home} enterFilter={this.enterHome}/>
 							<Route path="/category" testname="123" loadComponent={(cb)=> {
 							    import(/*webpackChunkName: "category"*/ '@section/category/category').then((Category)=>{
 							      cb(Category.default)

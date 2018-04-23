@@ -33,15 +33,15 @@ export default class Home extends React.Component {
 	}
 
 	componentWillReact() {
-		// console.log('Home--componentWillReact');
+		console.log('Home--componentWillReact');
 	}
 
 	componentWillMount() {
-		// console.log('Home--componentWillMount');
+		console.log('Home--componentWillMount');
 	}
 
 	componentWillUpdate() {
-		// console.log('Home--componentWillUpdate');
+		console.log('Home--componentWillUpdate');
 	}
 
 	componentWillReceiveProps() {
@@ -74,10 +74,10 @@ export default class Home extends React.Component {
 		return (
 			<div>
 			    {/*<input type="button" value="click me" onClick={this.changeValue}/>
-				<div>首页内容,当前时间: {this.state.curTime}</div>
 				<div>当前年纪: {this.homeStore.ageValue}</div>
 				<div>当前长度: {this.width}</div>*/}
 				{/*<div>info.name: {this.homeStore.info.name}</div>*/}
+				<div>首页内容,当前时间: {this.state.curTime}</div>
 				<br/>
 				<br/>
 				<MiniHome info={this.homeStore.info}/>
