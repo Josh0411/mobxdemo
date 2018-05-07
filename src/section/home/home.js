@@ -34,12 +34,10 @@ export default class Home extends React.Component {
 	}
 
 	componentWillReact() {
-		console.log('Home--componentWillReact');
+		console.log('Home--componentWillReact22');
 	}
 
-	componentWillMount() {
-		console.log('Home--componentWillMount');
-	}
+	
 
 	componentWillUpdate() {
 		console.log('Homeeee--componentWillUpdate');
@@ -48,6 +46,8 @@ export default class Home extends React.Component {
 	componentWillReceiveProps() {
 		console.log('Home--componentWillReceiveProps');
 	}
+
+	// add hahah
 
 	changeValue() {
 		this.homeStore.changeStore({
