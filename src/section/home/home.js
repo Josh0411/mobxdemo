@@ -42,11 +42,11 @@ export default class Home extends React.Component {
 	}
 
 	componentWillUpdate() {
-		console.log('Home--componentWillUpdate');
+		console.log('Homeeee--componentWillUpdate');
 	}
 
 	componentWillReceiveProps() {
-		// console.log('Home--componentWillReceiveProps');
+		console.log('Home--componentWillReceiveProps');
 	}
 
 	changeValue() {
@@ -59,9 +59,20 @@ export default class Home extends React.Component {
 	}
 
 	do_click() {
-		this.homeStore.updateInfo({
-			name: 'new--name'
-		});
+		// this.homeStore.updateInfo({
+		// 	name: 'new--name'
+		// });
+
+
+        
+        
+
+        Control.go('/category', {
+        	'XXXXX': 'XXXXX-2'
+        });
+
+
+
 	}
 
 	passFunction(event) {
@@ -71,14 +82,13 @@ export default class Home extends React.Component {
 	passValue = 2;
 
 	render () {
-		console.count('===Home render=====');
 		return (
 			<div>
 			    {/*<input type="button" value="click me" onClick={this.changeValue}/>
 				<div>当前年纪: {this.homeStore.ageValue}</div>
 				<div>当前长度: {this.width}</div>*/}
 				{/*<div>info.name: {this.homeStore.info.name}</div>*/}
-				<div>首页内容,当前时间: {this.state.curTime}</div>
+				<div className="name">22首页内容,当前时间: {this.state.curTime}</div>
 				<br/>
 				<br/>
 				<MiniHome info={this.homeStore.info}/>

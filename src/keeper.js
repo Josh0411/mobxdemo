@@ -12,7 +12,7 @@ import 'babel-polyfill';
 
 import { Link, HashRouter, Route } from 'react-keeper';
 
-import DevTools from 'mobx-react-devtools';
+// import DevTools from 'mobx-react-devtools';
 
 
 // spy((event) => {
@@ -21,11 +21,9 @@ import DevTools from 'mobx-react-devtools';
 //     }
 // })
 
-
-
 class App extends React.Component {
-	enterHome(cb) {
-		console.log('====enterHome====');
+	enterCategory(cb) {
+		console.log('====enterCategory====');
 		cb();
 	}
 	render () {
@@ -36,7 +34,7 @@ class App extends React.Component {
 						<div className="nav">
 							<ul>
 								<li>
-									<Link to="/home">首页</Link>
+									<Link tyle="img" src="./images/1.png" to="/home">首页</Link>
 								</li>
 								<li>
 									<Link to="/category">分类</Link>
@@ -44,15 +42,14 @@ class App extends React.Component {
 							</ul>
 						</div>
 						<div className="content">
-							<Route index cache path="/home" component={Home} enterFilter={this.enterHome}/>
-							<Route path="/category" testname="123" loadComponent={(cb)=> {
+							<Route index cache path="/home" component={Home} />
+							<Route path="/category" enterFilter={this.enterCategory} loadComponent={(cb)=> {
 							    import(/*webpackChunkName: "category"*/ '@section/category/category').then((Category)=>{
 							      cb(Category.default)
 							    })
 							}} />
 							<Route miss path="/404" component={Lost}/>
 						</div>
-						
 					</div>
 				</HashRouter>
 			</Provider>
@@ -60,6 +57,16 @@ class App extends React.Component {
 	}
 }
 
+
+// 只有当开启了模块热替换时 module.hot 才存在
+if (module.hot) {
+  // accept 函数的第一个参数指出当前文件接受哪些子模块的替换，这里表示只接受 ./AppComponent 这个子模块
+  // 第2个参数用于在新的子模块加载完毕后需要执行的逻辑
+  module.hot.accept(['./section/home/home'], () => {
+    // 新的 AppComponent 加载成功后重新执行下组建渲染逻辑
+    ReactDOM.render(<App/>, document.getElementById('app'));
+  });
+}
 
 
 

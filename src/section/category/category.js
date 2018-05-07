@@ -13,6 +13,9 @@ export default class Category extends React.Component {
 		this.categoryStore = this.props.categoryStore;
 		console.log('This is category page props', this.props);
 		this.back = this.back.bind(this);
+
+		console.log('Control.state', Control.state);
+
 	}
 
 	back() {
@@ -50,3 +53,17 @@ export default class Category extends React.Component {
 	}
 
 }
+
+const entreFilter = (callback, props)=> {
+	if(true) {
+		callback();
+	}
+}
+
+const leaveFilter = (callback, props)=> {
+	if(true) {
+		callback();
+	}
+}
+
+

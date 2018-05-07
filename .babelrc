@@ -1,9 +1,12 @@
-{"presets": [
+{
+  "presets": [
     [
       "env",
       {
         "targets": {
-          "browsers": ["firefox >= 40"],
+          "browsers": [
+            "last 2 versions"
+          ]
         },
         "modules": false,
         "useBuiltIns": true
@@ -13,4 +16,4 @@
     ['stage-0']
   ],
   "plugins": ["transform-decorators-legacy"]
-  }
+}

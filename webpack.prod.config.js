@@ -12,14 +12,16 @@ const happyThreadPool = HappyPack.ThreadPool({ size: 4 });
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const purifycssWebpackPlugin = require('purifycss-webpack-plugin');
-const glob = require('glob');
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 
 module.exports = function(env) {
     return {
         entry: {
             'keeper': ['./src/keeper.js', './src/mobx_test.js'],
-            'router': ['./src/router.js']
+            'vendor': ['react', 'react-dom', 'react-router-dom', 'react-keeper', 'mobx', 'mobx-react', 'babel-polyfill']
         },
         output: {
             filename: 'js/[name]-[chunkhash].js',
@@ -64,11 +66,8 @@ module.exports = function(env) {
         },
         plugins: [
             new cleanWebpackPlugin(path.resolve(__dirname, './dist')),
-            new webpack.DllReferencePlugin({
-                manifest: path.resolve(__dirname, './dll/vendor-manifest.json')
-            }),
             new NamedModulesPlugin(),
-            new webpack.HashedModuleIdsPlugin(),
+            new BundleAnalyzerPlugin(),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
             }),
@@ -82,78 +81,45 @@ module.exports = function(env) {
             new stylelint({
                 fix: false
             }),
-            // new UglifyJSPlugin({
-            //     uglifyOptions: {
-            //         parallel: true,
-            //         output: {
-            //             // 最紧凑的输出
-            //             beautify: false,
-            //             // 删除所有的注释
-            //             comments: false,
-            //         },
-            //         compress: {
-            //             // 在UglifyJs删除没有用到的代码时不输出警告
-            //             warnings: false,
-            //             // 删除所有的 `console` 语句，可以兼容ie浏览器
-            //             drop_console: true,
-            //             // 内嵌定义了但是只用到一次的变量
-            //             collapse_vars: true,
-            //             // 提取出出现多次但是没有定义成变量去引用的静态值
-            //             reduce_vars: true,
-            //         }
-            //     }
-            // }),
-            // 使用 ParallelUglifyPlugin 并行压缩输出的 JS 代码
-            // new ParallelUglifyPlugin({
-            //   // 传递给 UglifyJS 的参数
-            //   uglifyJS: {
-            //     output: {
-            //       // 最紧凑的输出
-            //       beautify: false,
-            //       // 删除所有的注释
-            //       comments: false,
-            //     },
-            //     compress: {
-            //       // 在UglifyJs删除没有用到的代码时不输出警告
-            //       warnings: false,
-            //       // 删除所有的 `console` 语句，可以兼容ie浏览器
-            //       drop_console: true,
-            //       // 内嵌定义了但是只用到一次的变量
-            //       collapse_vars: true,
-            //       // 提取出出现多次但是没有定义成变量去引用的静态值
-            //       reduce_vars: true,
-            //     }
-            //   },
-            //   cacheDir: __dirname + '/uglifyJSCache',
-            //   exclude: './node_modules',
-            //   test: /(\.js)$/i,
-            //   workerCount: 4
-            // }),
+            new UglifyJSPlugin({
+                uglifyOptions: {
+                    parallel: true,
+                    output: {
+                        // 最紧凑的输出
+                        beautify: false,
+                        // 删除所有的注释
+                        comments: false,
+                    },
+                    compress: {
+                        // 在UglifyJs删除没有用到的代码时不输出警告
+                        warnings: false,
+                        // 删除所有的 `console` 语句，可以兼容ie浏览器
+                        drop_console: true,
+                        // 内嵌定义了但是只用到一次的变量
+                        collapse_vars: true,
+                        // 提取出出现多次但是没有定义成变量去引用的静态值
+                        reduce_vars: true,
+                    }
+                }
+            }),
             new ExtractTextPlugin({
-                filename: '[name].[contenthash].css',
+                filename: './css/[name].[contenthash].css',
                 allChunks: true
             }),
             new CopyWebpackPlugin([
                 { from: __dirname + '/src/Voice', to: __dirname + '/dist/Voice', toType: 'dir' }
             ]),
             new webpack.optimize.CommonsChunkPlugin({
-                names: ['vendor', 'manifest'],
-                minChunks: Infinity
+                names: ['manifest', 'vendor']
             }),
+            // new webpack.optimize.CommonsChunkPlugin({
+            //     chunks: ['app', 'vendor'],
+            //     name: 'base'
+            // }),
             new HtmlWebpackPlugin({
-                template: 'html-loader!./src/keeper.html',
-                filename: './keeper.html',
-                chunks: ['keeper', 'vendor', 'manifest'],
-                linfeng: 'josh'
-            }),
-            new HtmlWebpackPlugin({
-                template: './src/router.html',
-                filename: './router.html',
-                chunks: ['router', 'vendor', 'manifest']
-            }),
-            new HtmlIncludeAssetsPlugin({
-                assets: ['./dll/vendor.js'], //添加的资源相对html的路径
-                append: false // false 在其他资源的之前添加 true 在其他资源之后添加
+                template: './src/index.html',
+                filename: './index.html',
+                chunks: ['keeper', 'vendor', 'manifest']
             })
         ],
         resolve: {
@@ -162,7 +128,8 @@ module.exports = function(env) {
                 '@section': path.resolve(__dirname, './src/section'),
                 '@images': path.resolve(__dirname, './src/images')
             },
-            modules: [path.resolve(__dirname, 'node_modules')]
+            modules: [path.resolve(__dirname, 'node_modules')],
+            mainFields: ['jsnext:main', 'browser', 'main']
         },
         devServer: {
             host: '0.0.0.0',
