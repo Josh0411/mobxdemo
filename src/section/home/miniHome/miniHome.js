@@ -4,7 +4,7 @@ import { observable, action } from 'mobx';
 
 
 @observer 
-export default class MiniHome extends React.PureComponent {
+export default class MiniHome extends React.Component {
 	constructor (props) {
 		super(props);
 	}

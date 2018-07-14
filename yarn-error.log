@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add purifycss-webpack-plugin --dev
+  /usr/local/bin/node /usr/local/bin/yarn add inline-chunk-manifest-html-webpack-plugin --dev
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
@@ -38,6 +38,7 @@ npm manifest:
           "clean-webpack-plugin": "^0.1.19",
           "copy-webpack-plugin": "^4.5.1",
           "css-loader": "^0.28.11",
+          "dayjs": "^1.6.8",
           "extract-text-webpack-plugin": "^3.0.2",
           "file-loader": "^1.1.11",
           "happypack": "^4.0.1",
@@ -48,10 +49,12 @@ npm manifest:
           "mobx": "^4.1.0",
           "mobx-react": "^5.0.0",
           "mobx-react-devtools": "^5.0.1",
+          "moment": "^2.22.2",
           "node-sass": "^4.8.3",
           "postcss-loader": "^2.1.4",
           "purify-css": "^1.2.5",
           "purifycss-webpack": "^0.7.0",
+          "purifycss-webpack-plugin": "^2.0.3",
           "react-router-dom": "^4.2.2",
           "resolve-url-loader": "^2.3.0",
           "sass-loader": "^7.0.1",
@@ -64,7 +67,8 @@ npm manifest:
           "webpack": "3.10.0",
           "webpack-bundle-analyzer": "^2.11.1",
           "webpack-dev-server": "2.11.2",
-          "webpack-parallel-uglify-plugin": "^1.1.0"
+          "webpack-parallel-uglify-plugin": "^1.1.0",
+          "zepto": "^1.2.0"
       },
       "dependencies": {
           "react": "^16.2.0",
@@ -2159,6 +2163,10 @@ Lockfile:
     version "0.1.4"
     resolved "http://registry.npm.taobao.org/date-now/download/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
   
+  dayjs@^1.6.8:
+    version "1.6.8"
+    resolved "http://registry.npm.taobao.org/dayjs/download/dayjs-1.6.8.tgz#77de7a1694e42c9ae16bd5539080dac4856e9fb1"
+  
   debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8:
     version "2.6.9"
     resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -3085,6 +3093,16 @@ Lockfile:
   glob-to-regexp@^0.3.0:
     version "0.3.0"
     resolved "http://registry.npm.taobao.org/glob-to-regexp/download/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
+  
+  glob@^5.0.15:
+    version "5.0.15"
+    resolved "http://registry.npm.taobao.org/glob/download/glob-5.0.15.tgz#1bc936b9e02f4a603fcc222ecf7633d30b8b93b1"
+    dependencies:
+      inflight "^1.0.4"
+      inherits "2"
+      minimatch "2 || 3"
+      once "^1.3.0"
+      path-is-absolute "^1.0.0"
   
   glob@^6.0.4:
     version "6.0.4"
@@ -4571,6 +4589,10 @@ Lockfile:
     version "4.1.0"
     resolved "http://registry.npm.taobao.org/mobx/download/mobx-4.1.0.tgz#e4a9679cdafbe215b20e32ef93a7031845b3f1af"
   
+  moment@^2.22.2:
+    version "2.22.2"
+    resolved "http://registry.npm.taobao.org/moment/download/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+  
   move-concurrently@^1.0.1:
     version "1.0.1"
     resolved "http://registry.npm.taobao.org/move-concurrently/download/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -5587,6 +5609,16 @@ Lockfile:
     version "2.1.0"
     resolved "http://registry.npm.taobao.org/punycode/download/punycode-2.1.0.tgz#5f863edc89b96db09074bad7947bf09056ca4e7d"
   
+  purify-css@^1.1.1:
+    version "1.2.6"
+    resolved "http://registry.npm.taobao.org/purify-css/download/purify-css-1.2.6.tgz#56c2b58e4e1134247c6fdc20ba443b51b45e8b2f"
+    dependencies:
+      clean-css "^4.0.12"
+      glob "^7.1.1"
+      rework "^1.0.1"
+      uglify-js "^3.0.6"
+      yargs "^8.0.1"
+  
   purify-css@^1.2.5:
     version "1.2.5"
     resolved "http://registry.npm.taobao.org/purify-css/download/purify-css-1.2.5.tgz#c4b9ec90735765f3e247ba6a3b49f132f3482500"
@@ -5596,6 +5628,14 @@ Lockfile:
       rework "^1.0.1"
       uglify-js "^3.0.6"
       yargs "^8.0.1"
+  
+  purifycss-webpack-plugin@^2.0.3:
+    version "2.0.3"
+    resolved "http://registry.npm.taobao.org/purifycss-webpack-plugin/download/purifycss-webpack-plugin-2.0.3.tgz#ef34175d21390232db06009c066b92243b3921e7"
+    dependencies:
+      glob "^5.0.15"
+      purify-css "^1.1.1"
+      webpack-sources "^0.1.0"
   
   purifycss-webpack@^0.7.0:
     version "0.7.0"
@@ -7426,7 +7466,7 @@ Lockfile:
       webpack-sources "^1.0.0"
       worker-farm "^1.3.1"
   
-  webpack-sources@^0.1.4:
+  webpack-sources@^0.1.0, webpack-sources@^0.1.4:
     version "0.1.5"
     resolved "http://registry.npm.taobao.org/webpack-sources/download/webpack-sources-0.1.5.tgz#aa1f3abf0f0d74db7111c40e500b84f966640750"
     dependencies:
@@ -7679,6 +7719,10 @@ Lockfile:
       cliui "^2.1.0"
       decamelize "^1.0.0"
       window-size "0.1.0"
+  
+  zepto@^1.2.0:
+    version "1.2.0"
+    resolved "http://registry.npm.taobao.org/zepto/download/zepto-1.2.0.tgz#e127bd9e66fd846be5eab48c1394882f7c0e4f98"
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/linfeng03/Documents/Try/mobxdemo/node_modules/.bin/acorn'
+  Error: EACCES: permission denied, unlink '/Users/linfeng03/Documents/Try/mobxdemo/node_modules/.bin/atob'

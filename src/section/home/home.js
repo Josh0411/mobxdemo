@@ -6,6 +6,10 @@ import { observable, action, extendObservable,get,set } from 'mobx';
 import SubHome from './subHome/subHome';
 import MiniHome from './miniHome/miniHome';
 import './style/home.scss';
+import 'dayjs/locale/es';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import zepto from 'zepto';
 
 
 @inject('homeStore')
@@ -25,6 +29,15 @@ export default class Home extends React.Component {
 		this.changeValue = this.changeValue.bind(this);
 		this.do_click = this.do_click.bind(this);
 		this.passFunction = this.passFunction.bind(this);
+
+		// console.log(dayjs('2018-08-08').locale('es').format());
+
+		console.log(moment(1316116057189).locale('zh-cn').fromNow());
+
+		console.log(zepto('body img').css({'border':'solid 3px red'}));
+
+        
+
 	}
 
 	@observable width = 1009;
@@ -36,8 +49,6 @@ export default class Home extends React.Component {
 	componentWillReact() {
 		console.log('Home--componentWillReact22');
 	}
-
-	
 
 	componentWillUpdate() {
 		console.log('Homeeee--componentWillUpdate');
@@ -62,18 +73,12 @@ export default class Home extends React.Component {
 		// this.homeStore.updateInfo({
 		// 	name: 'new--name'
 		// });
-
-
-        
-        
-
         Control.go('/category', {
         	'XXXXX': 'XXXXX-2'
         });
-
-
-
 	}
+
+
 
 	passFunction(event) {
 		console.log('target', event.target);

@@ -13,13 +13,22 @@ const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const purifycssWebpackPlugin = require('purifycss-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const glob = require('glob');
+const linfeng = require('./wp/linfeng');
+const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin');
+
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
+
 
 module.exports = function(env) {
     return {
+        // 设置模块的根目录，影响相对路径的写法
+        // context: path.resolve(__dirname, 'src'),
         entry: {
             'keeper': ['./src/keeper.js', './src/mobx_test.js'],
-            'router': ['./src/router.js']
+            'router': ['./src/router.js'],
+            'analysis': ['./src/js/analysis.js']
         },
         output: {
             filename: 'js/[name]-[chunkhash].js',
@@ -27,6 +36,9 @@ module.exports = function(env) {
             chunkFilename: "[name].chunk.[chunkhash].js"
         },
         devtool: 'source-map',
+        externals: {
+            "zepto": "Zepto"
+        },
         module: {
             rules: [{
                 test: /(\.jsx|\.js)$/i,
@@ -64,6 +76,7 @@ module.exports = function(env) {
         },
         plugins: [
             new cleanWebpackPlugin(path.resolve(__dirname, './dist')),
+            new linfeng(),
             new webpack.DllReferencePlugin({
                 manifest: path.resolve(__dirname, './dll/vendor-manifest.json')
             }),
@@ -136,6 +149,15 @@ module.exports = function(env) {
             new CopyWebpackPlugin([
                 { from: __dirname + '/src/Voice', to: __dirname + '/dist/Voice', toType: 'dir' }
             ]),
+            new CopyWebpackPlugin([
+                { from: __dirname + '/src/zepto.min.js', to: __dirname + '/dist' }
+            ]),
+            new CopyWebpackPlugin([
+                { from: __dirname + '/src/work.js', to: __dirname + '/dist' }
+            ]),
+            new CopyWebpackPlugin([
+                { from: __dirname + '/src/subwork.js', to: __dirname + '/dist' }
+            ]),
             new webpack.optimize.CommonsChunkPlugin({
                 names: ['vendor', 'manifest'],
                 minChunks: Infinity
@@ -143,8 +165,9 @@ module.exports = function(env) {
             new HtmlWebpackPlugin({
                 template: 'html-loader!./src/keeper.html',
                 filename: './keeper.html',
-                chunks: ['keeper', 'vendor', 'manifest'],
-                linfeng: 'josh'
+                chunks: ['keeper', 'vendor', 'manifest', 'analysis'],
+                linfeng: 'josh',
+                inlineSource: 'analysis'
             }),
             new HtmlWebpackPlugin({
                 template: './src/router.html',
@@ -154,7 +177,14 @@ module.exports = function(env) {
             new HtmlIncludeAssetsPlugin({
                 assets: ['./dll/vendor.js'], //添加的资源相对html的路径
                 append: false // false 在其他资源的之前添加 true 在其他资源之后添加
-            })
+            }),
+            new HtmlWebpackInlineSourcePlugin(),
+            // new PreloadWebpackPlugin({
+            //     rel: 'preload',
+            //     as: 'script',
+            //     include: 'allChunks'
+            // })
+            // new InlineChunkManifestHtmlWebpackPlugin()
         ],
         resolve: {
             alias: {
